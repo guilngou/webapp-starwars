@@ -1,5 +1,9 @@
 # webapp-starwars
 
+[![Build Status](https://travis-ci.org/guilngou/webapp-starwars.svg?branch=master)](https://travis-ci.org/guilngou/webapp-starwars)
+
+[![codecov](https://codecov.io/gh/guilngou/webapp-starwars/branch/master/graph/badge.svg)](https://codecov.io/gh/guilngou/webapp-starwars)
+
 ## Project setup
 
 ```
