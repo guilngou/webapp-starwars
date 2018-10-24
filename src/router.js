@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import ResourceDetail from './views/ResourceDetail.vue'
-import ResourcesList from './views/ResourcesList.vue'
+import ResourceList from './views/ResourceList.vue'
 
 Vue.use(Router)
 
@@ -10,8 +10,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'resources-list',
-      component: ResourcesList
+      name: 'resource-list',
+      component: ResourceList
     },
     {
       path: '/resourcedetail/:resourcename/:id',
