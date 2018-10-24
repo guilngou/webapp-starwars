@@ -2,8 +2,8 @@
     <div>
         <h1>Resource detail</h1>
         <p>This is {{ resourcename}} #{{id}}</p>
-    </div>
-    
+</div>
+
 </template>
 
 <script>
