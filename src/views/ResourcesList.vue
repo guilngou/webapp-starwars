@@ -1,13 +1,20 @@
+
 <template>
+
     <div>
         <h1>Resources Listing</h1>
-        <router-link :to="{ name: 'resource-detail', params: { resourcename: 'book', id: 1}}">Book #1</router-link>
+        <ResourceCard/>
     </div>
     
 </template>
 
 <script>
-export default {}
+import ResourceCard from '@/components/ResourceCard.vue'
+export default {
+  components: {
+    ResourceCard
+  }
+}
 </script>
 
 <style scoped>
