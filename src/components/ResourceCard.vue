@@ -1,21 +1,20 @@
 <template>
-    <router-link class="resource-link" :to="{ name: 'resource-detail', params: { resourcename: 'book', id: 1}}">
-      <div class="resource-card -shadow">
-        <h4 class="title">{{ event.title }}</h4>
-        <span>{{ event.name }}</span>
-      </div>
-    </router-link>
+  <router-link class="resource-link" :to="{ name: 'resource-detail', params: { resourcename: filter.toLowerCase(), id: resource.url.split('/').pop()}}">
+    <div class="resource-card -shadow">
+      <h4 class="title">{{ !!resource.name ? resource.name : "No name"}}</h4>
+      <span>{{ !!resource.name ? resource.name : "No name"}}</span>
+    </div>
+  </router-link>
 </template>
  
 <script>
 export default {
-  data() {
-    return {
-      event: {
-        id: 1,
-        title: 'Resource card',
-        name: 'Resource name'
-      }
+  props: {
+    resource: {
+      type: Object
+    },
+    filter: {
+      type: String
     }
   }
 }

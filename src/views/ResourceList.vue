@@ -6,13 +6,13 @@
       <el-radio-button label="Books"></el-radio-button>
       <el-radio-button label="Houses"></el-radio-button>
     </el-radio-group>
-    <ResourceCard />
+    <ResourceCard v-for="resource in resources" :key="resource.url.split('/').pop()" :filter="filter" :resource="resource" />
   </div>
 </template>
 
 <script>
 import ResourceCard from '@/components/ResourceCard.vue'
-import axios from 'axios'
+import ResourceService from '@/services/ResourceService.js'
 
 export default {
   components: {
@@ -20,19 +20,33 @@ export default {
   },
   data() {
     return {
-      filter: 'Characters'
+      filter: 'Books',
+      resources: []
     }
   },
   created() {
-    axios
-      .get('https://www.anapioficeandfire.com/api/' + this.filter)
+    ResourceService.getResources(this.filter)
       .then(response => {
-        //this.resourceTypes = Object.keys(response.data)
+        this.resources = response.data
+        console.log('id : ' + response.data[0].url.split('/').pop())
         console.log(response.data)
       })
       .catch(error => {
         console.error(error)
       })
+  },
+  watch: {
+    filter() {
+      ResourceService.getResources(this.filter)
+        .then(response => {
+          this.resources = response.data
+          console.log('id : ' + response.data[0].url.split('/').pop())
+          console.log(response.data)
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    }
   }
 }
 </script>
