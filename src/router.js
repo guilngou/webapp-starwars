@@ -14,7 +14,7 @@ export default new Router({
       component: ResourceList
     },
     {
-      path: '/resourcedetail/:resourcename/:id',
+      path: '/resourcedetail/:filter/:id',
       name: 'resource-detail',
       component: ResourceDetail,
       props: true

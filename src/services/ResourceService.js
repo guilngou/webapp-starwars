@@ -15,23 +15,5 @@ export default {
   },
   getResource(filter, id) {
     return apiClient.get(`/${filter}/${id}`)
-  },
-  getCharacters() {
-    return apiClient.get('/characters')
-  },
-  getCharacter(id) {
-    return apiClient.get('/characters/' + id)
-  },
-  getBooks() {
-    return apiClient.get('/books')
-  },
-  getBook(id) {
-    return apiClient.get('/books/' + id)
-  },
-  getHouses() {
-    return apiClient.get('/houses')
-  },
-  getHouse(id) {
-    return apiClient.get('/house/' + id)
   }
 }

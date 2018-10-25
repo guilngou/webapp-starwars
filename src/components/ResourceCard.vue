@@ -1,5 +1,5 @@
 <template>
-  <router-link class="resource-link" :to="{ name: 'resource-detail', params: { resourcename: filter.toLowerCase(), id: resource.url.split('/').pop()}}">
+  <router-link class="resource-link" :to="{ name: 'resource-detail', params: { filter: filter.toLowerCase(), id: resource.url.split('/').pop()}}">
     <div class="resource-card -shadow">
       <h4 class="title">{{ !!resource.name ? resource.name : "No name"}}</h4>
       <span>{{ !!resource.name ? resource.name : "No name"}}</span>

@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>Resource detail</h1>
-        <p>This is {{ resource.name}}, character #{{id}}</p>
+        <p>This is {{ resource.name}}, Resource ID:#{{id}}</p>
     </div>
 
 </template>
@@ -11,7 +11,7 @@ import ResourceService from '@/services/ResourceService.js'
 
 export default {
   props: {
-    resourcename: {
+    filter: {
       type: String
     },
     id: {
@@ -24,7 +24,7 @@ export default {
     }
   },
   created() {
-    ResourceService.getCharacter(this.id)
+    ResourceService.getResource(this.filter, this.id)
       .then(response => {
         console.log(response.data)
         this.resource = response.data
