@@ -2,7 +2,20 @@
   <router-link class="resource-link" :to="{ name: 'resource-detail', params: { filter: filter.toLowerCase(), id: resource.url.split('/').pop()}}">
     <div class="resource-card -shadow">
       <h4 class="title">{{ !!resource.name ? resource.name : "No name"}}</h4>
-      <span>{{ !!resource.name ? resource.name : "No name"}}</span>
+      <div v-if="filter==='Characters'">
+        <span>{{ !!resource.aliases ? (!!resource.aliases[0] ? resource.aliases[0] : "No alias") : "No alias" }}</span>
+        <br />
+      </div>
+      <div v-if="filter==='Books'">
+        <span>{{ !!resource.numberOfPages ? `Number of pages: ${resource.numberOfPages}` : "Number of pages unknown"}}</span>
+        <br />
+        <span>{{ !!resource.publisher ? `Publisher: ${resource.publisher}` : "Publisher unknown"}}</span>
+        <br />
+      </div>
+      <div v-if="filter==='Houses'">
+        <span>{{ !!resource.region ? `Region: ${resource.region}` : "Region unknown"}}</span>
+        <br />
+      </div>
     </div>
   </router-link>
 </template>

@@ -10,8 +10,8 @@ const apiClient = axios.create({
 })
 
 export default {
-  getResources(filter) {
-    return apiClient.get('/' + filter)
+  getResources(filter, currentPage) {
+    return apiClient.get(`/${filter}?page=${currentPage}`)
   },
   getResource(filter, id) {
     return apiClient.get(`/${filter}/${id}`)
