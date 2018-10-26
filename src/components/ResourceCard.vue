@@ -1,18 +1,18 @@
 <template>
-  <router-link class="resource-link" :to="{ name: 'resource-detail', params: { filter: filter.toLowerCase(), id: resource.url.split('/').pop()}}">
+  <router-link class="resource-link" :to="{ name: 'resource-detail' , query: { filter: filter, id: id }}">
     <div class="resource-card -shadow">
       <h4 class="title">{{ !!resource.name ? resource.name : "No name"}}</h4>
-      <div v-if="filter==='Characters'">
+      <div v-if="filter==='characters'">
         <span>{{ !!resource.aliases ? (!!resource.aliases[0] ? resource.aliases[0] : "No alias") : "No alias" }}</span>
         <br />
       </div>
-      <div v-if="filter==='Books'">
+      <div v-if="filter==='books'">
         <span>{{ !!resource.numberOfPages ? `Number of pages: ${resource.numberOfPages}` : "Number of pages unknown"}}</span>
         <br />
         <span>{{ !!resource.publisher ? `Publisher: ${resource.publisher}` : "Publisher unknown"}}</span>
         <br />
       </div>
-      <div v-if="filter==='Houses'">
+      <div v-if="filter==='houses'">
         <span>{{ !!resource.region ? `Region: ${resource.region}` : "Region unknown"}}</span>
         <br />
       </div>
@@ -26,8 +26,13 @@ export default {
     resource: {
       type: Object
     },
-    filter: {
+    id: {
       type: String
+    }
+  },
+  computed: {
+    filter() {
+      return this.$route.query.filter || 'characters'
     }
   }
 }

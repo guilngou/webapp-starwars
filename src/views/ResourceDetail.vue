@@ -1,37 +1,29 @@
 <template>
     <div>
         <h1>Resource detail</h1>
-        <p>This is {{ resource.name}}, Resource ID:#{{id}}</p>
+        <p>This is {{ resource.name }} {{ !!resource.aliases ? (!!resource.aliases[0] ? resource.aliases[0] : "(No alias)") : "(No alias)" }}, Resource ID:#{{id}}</p>
     </div>
 
 </template>
 
 <script>
-import ResourceService from '@/services/ResourceService.js'
+import { mapState } from 'vuex'
 
 export default {
-  props: {
-    filter: {
-      type: String
-    },
-    id: {
-      type: String
-    }
-  },
-  data() {
-    return {
-      resource: {}
-    }
-  },
   created() {
-    ResourceService.getResource(this.filter, this.id)
-      .then(response => {
-        console.log(response.data)
-        this.resource = response.data
-      })
-      .catch(error => {
-        console.log('Error :' + error)
-      })
+    this.$store.dispatch('fetchResource', {
+      filter: this.filter,
+      id: this.id
+    })
+  },
+  computed: {
+    filter() {
+      return this.$route.query.filter || 'Characters'
+    },
+    id() {
+      return this.$route.query.id || 1
+    },
+    ...mapState(['resource'])
   }
 }
 </script>

@@ -1,89 +1,63 @@
 <template>
   <div>
     <h1>Resources Listing</h1>
-    <el-radio-group v-model="filter" size="medium">
-      <el-radio-button label="Characters"></el-radio-button>
-      <el-radio-button label="Books"></el-radio-button>
-      <el-radio-button label="Houses"></el-radio-button>
-    </el-radio-group>
-    <ResourceCard v-for="resource in resources" :key="resource.url.split('/').pop()" :filter="filter" :resource="resource" />
-    <el-button-group>
-      <el-button type="primary" @click="currentPage=1" :disabled="currentPage===1" icon="el-icon-d-arrow-left"></el-button>
-      <el-button type="primary" @click="--currentPage" :disabled="currentPage===1" icon="el-icon-arrow-left"></el-button>
-      <el-button type="primary" disabled>Page {{ currentPage }}/{{ numberOfPage }}</el-button>
-      <el-button type="primary" @click="++currentPage" :disabled="currentPage===numberOfPage"><i class="el-icon-arrow-right el-icon-right"></i></el-button>
-      <el-button type="primary" @click="currentPage=numberOfPage" :disabled="currentPage===numberOfPage"><i class="el-icon-d-arrow-right"></i></el-button>
-    </el-button-group>
+
+    <router-link :to="{ name: 'resource-list', query: { filter: 'characters' } }">
+      Characters</router-link>
+    <template> | </template>
+    <router-link :to="{ name: 'resource-list', query: { filter: 'books' } }">
+      Books</router-link>
+    <template> | </template>
+    <router-link :to="{ name: 'resource-list', query: { filter: 'houses' }}">
+      Houses</router-link>
+
+    <ResourceCard v-for="resource in resources" :key="resource.url.split('/').pop()" :resource="resource" :id="resource.url.split('/').pop()" />
+
+    <router-link :class="{ disabled: page===1 }" :to="{ name: 'resource-list', query: { filter: filter, page: 1 } }" rel="first">
+      First page</router-link>
+    <template> | </template>
+    <router-link :class="{ disabled: page===1 }" :to="{ name: 'resource-list', query: { filter: filter, page: page - 1 } }" rel="prev">
+      Prev page</router-link>
+    <template> | </template>
+    <template>Page {{ page }}/{{ numberOfPage }}</template>
+    <template> | </template>
+    <router-link :class="{ disabled: page===numberOfPage }" :to="{ name: 'resource-list', query: { filter: filter, page: page + 1 } }" rel="next">
+      Next page</router-link>
+    <template> | </template>
+    <router-link :class="{ disabled: page===numberOfPage }" :to="{ name: 'resource-list', query: { filter: filter, page: numberOfPage} }" rel="last">
+      Last page</router-link>
   </div>
 </template>
 
 <script>
 import ResourceCard from '@/components/ResourceCard.vue'
-import ResourceService from '@/services/ResourceService.js'
-import ParseLinkHeader from '@/services/ParseLinkHeader.js'
+import { mapState } from 'vuex'
 
 export default {
   components: {
     ResourceCard
   },
-  data() {
-    return {
-      filter: 'Characters',
-      resources: [],
-      currentPage: 1,
-      numberOfPage: 1
-    }
+  computed: {
+    page() {
+      return parseInt(this.$route.query.page) || 1
+    },
+    filter() {
+      return this.$route.query.filter || 'characters'
+    },
+    ...mapState(['numberOfPage', 'resources'])
   },
   created() {
-    ResourceService.getResources(this.filter, this.currentPage)
-      .then(response => {
-        this.resources = response.data
-        this.numberOfPage = parseInt(
-          ParseLinkHeader.parse_link_header(response.headers.link).last.match(
-            /page=([0-9]+)&pageSize/
-          )[1]
-        )
-      })
-      .catch(error => {
-        console.error(error)
-      })
-  },
-  watch: {
-    filter() {
-      if (this.currentPage > 1) {
-        this.currentPage = 1
-      } else {
-        ResourceService.getResources(this.filter, this.currentPage)
-          .then(response => {
-            this.resources = response.data
-            this.numberOfPage = parseInt(
-              ParseLinkHeader.parse_link_header(
-                response.headers.link
-              ).last.match(/page=([0-9]+)&pageSize/)[1]
-            )
-          })
-          .catch(error => {
-            console.error(error)
-          })
-      }
-    },
-    currentPage() {
-      ResourceService.getResources(this.filter, this.currentPage)
-        .then(response => {
-          this.resources = response.data
-          this.numberOfPage = parseInt(
-            ParseLinkHeader.parse_link_header(response.headers.link).last.match(
-              /page=([0-9]+)&pageSize/
-            )[1]
-          )
-        })
-        .catch(error => {
-          console.error(error)
-        })
-    }
+    this.$store.dispatch('fetchResources', {
+      filter: this.filter,
+      page: this.page
+    })
   }
 }
 </script>
 
 <style scoped>
+.disabled {
+  pointer-events: none;
+  opacity: 0.4;
+}
 </style>
