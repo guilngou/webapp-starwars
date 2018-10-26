@@ -38,7 +38,6 @@ export default {
     ResourceService.getResources(this.filter, this.currentPage)
       .then(response => {
         this.resources = response.data
-        this.currentPage = 1
         this.numberOfPage = parseInt(
           ParseLinkHeader.parse_link_header(response.headers.link).last.match(
             /page=([0-9]+)&pageSize/
@@ -49,13 +48,12 @@ export default {
         console.error(error)
       })
   },
-
   watch: {
     filter() {
       if (this.currentPage > 1) {
         this.currentPage = 1
       } else {
-        ResourceService.getResources(this.filter, 1)
+        ResourceService.getResources(this.filter, this.currentPage)
           .then(response => {
             this.resources = response.data
             this.numberOfPage = parseInt(
