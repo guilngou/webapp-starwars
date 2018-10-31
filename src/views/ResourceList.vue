@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Resources Listing</h1>
+    <h1>Resources Listing for {{user.user.name}}</h1>
 
     <router-link :to="{ name: 'resource-list', query: { filter: 'characters' } }">
       Characters</router-link>
@@ -44,7 +44,7 @@ export default {
     filter() {
       return this.$route.query.filter || 'characters'
     },
-    ...mapState(['numberOfPage', 'resources'])
+    ...mapState(['numberOfPage', 'resources', 'user'])
   },
   created() {
     this.$store.dispatch('fetchResources', {
